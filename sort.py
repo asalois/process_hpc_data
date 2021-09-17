@@ -1,4 +1,4 @@
-# Make and train a Deep NN Eq in Python
+# Sort through hpc data in Python
 
 import sys
 import os
@@ -9,10 +9,10 @@ import numpy as np
 import pandas as pd
 start_time = time.time()
 
-for i in range(1,162):
+for i in range(1,990):
     # Load the data
-    matname = str(i).zfill(3) + "_ber_eqs.mat"
-    try:
+    matname = "data/" + str(i).zfill(3) + "_ber_eqs.mat"
+    try: 
         mat = spio.loadmat(matname, squeeze_me=True)
         ber = mat['ber']
         step = mat['step']
@@ -26,8 +26,8 @@ for i in range(1,162):
             data1 = data_add
         else:
             data1 = np.concatenate((data1,data_add))
-    except:
-        print(matname)
+    except: # if no file
+        #print(matname)
         pass
 
 cols = ['taps','step','trainNum']
