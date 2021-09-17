@@ -31,7 +31,7 @@ for i in range(1,990):
         pass
 
 cols = ['taps','step','trainNum']
-snr = list(range(1,32))
+snr = list(range(5,36))
 cols.extend(snr)
 cols.append('sum')
 df = pd.DataFrame(data1,columns=cols)
