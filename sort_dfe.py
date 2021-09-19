@@ -8,15 +8,15 @@ import pandas as pd
 start_time = time.time()
 k = 10
 
-for i in range(1,990): # load in data
-    matname = "data/lms/" + str(i).zfill(3) + "_ber_eqs.mat"
+for i in range(1,3543): # load in data
+    matname = "data/dfe/" + str(i).zfill(4) + "_ber_eqs.mat"
     try: 
         mat = spio.loadmat(matname, squeeze_me=True)
         ber = mat['ber']
-        step = mat['step']
         trainNum = mat['trainNum']
         taps = mat['taps']
-        data = [taps,step,trainNum]
+        ftaps = mat['ftaps']
+        data = [taps,ftaps,trainNum]
         data.extend(ber)
         data.append(sum(ber))
         data.append(sum(ber[-k:]))
@@ -30,25 +30,26 @@ for i in range(1,990): # load in data
         # do nothing
         pass
 
-cols = ['taps','step','trainNum']
+cols = ['taps','ftaps','trainNum']
 snr = list(range(5,36))
 cols.extend(snr)
 cols.append('full sum')
 cols.append('k end sum')
 df = pd.DataFrame(data1,columns=cols)
 df = df.sort_values('k end sum')
+df = df.drop_duplicates(subset=['taps','ftaps','trainNum'])
 df1 = df.head(5)
 df_ber = df1.iloc[:,3:34].copy().T
 ber_cols = list()
 for index, row in df1.iterrows():
     ber_cols.append(\
-            "tps={a:d} stp={b:1.2f} trn={c:d}"\
-            .format(a=int(row['taps']), b=row['step'], c=int(math.log2(row['trainNum']))))
+            "tps={a:d} ftps={b:d} trn={c:d}"\
+            .format(a=int(row['taps']), b=int(row['ftaps']), c=int(math.log2(row['trainNum']))))
 df_ber.columns = ber_cols
-#print(df)
+print(df)
 print(df1)
 print(df_ber)
-df_ber.plot(style='x-',kind='line',logy=True,\
+df_ber.plot(style='x-',kind='line',logy=False,\
         title="LMS Scan Ber",xlabel="SNR dB",ylabel="BER")
 plt.show()
 print("--- %.2f seconds ---" % (time.time() - start_time))
