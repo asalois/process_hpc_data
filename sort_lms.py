@@ -8,7 +8,7 @@ import pandas as pd
 start_time = time.time()
 k = 10
 
-for i in range(1,990): # load in data
+for i in range(1,2000): # load in data
     matname = "data/lms/" + str(i).zfill(3) + "_ber_eqs.mat"
     try: 
         mat = spio.loadmat(matname, squeeze_me=True)
@@ -42,7 +42,7 @@ df_ber = df1.iloc[:,3:34].copy().T
 ber_cols = list()
 for index, row in df1.iterrows():
     ber_cols.append(\
-            "tps={a:d} stp={b:1.2f} trn={c:d}"\
+            "tps={a:d} stp={b:1.3f} trn={c:d}"\
             .format(a=int(row['taps']), b=row['step'], c=int(math.log2(row['trainNum']))))
 df_ber.columns = ber_cols
 #print(df)
