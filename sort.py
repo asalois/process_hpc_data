@@ -9,7 +9,7 @@ start_time = time.time()
 k = 10
 
 for i in range(1,990): # load in data
-    matname = "data/" + str(i).zfill(3) + "_ber_eqs.mat"
+    matname = "data/lms/" + str(i).zfill(3) + "_ber_eqs.mat"
     try: 
         mat = spio.loadmat(matname, squeeze_me=True)
         ber = mat['ber']
