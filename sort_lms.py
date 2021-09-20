@@ -33,6 +33,7 @@ snr = list(range(5,36))
 cols.extend(snr)
 cols.append('full sum')
 df = pd.DataFrame(data1,columns=cols)
+df = df[df['full sum'] < 31]
 for k in range(5,26,5):
     df['k end sum'] = df.iloc[:,-(k+1):-1].sum(axis=1)
     df = df.sort_values('k end sum')
