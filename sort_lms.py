@@ -44,12 +44,10 @@ for k in range(5,26,5):
                 "tps={a:d} stp={b:1.3f} trn={c:d}"\
                 .format(a=int(row['taps']), b=row['step'], c=int(math.log2(row['trainNum']))))
     df_ber.columns = ber_cols
-    #print(df)
     print(df1)
-    print(df_ber)
     df_ber.plot(style='x-',kind='line',logy=True,\
             title="LMS Scan Ber",xlabel="SNR dB",ylabel="BER")
-    #plt.show()
     fig_name = "lms_k_%d.png" % k
     plt.savefig(fig_name)
+print(df.shape)
 print("--- %.2f seconds ---" % (time.time() - start_time))
