@@ -35,7 +35,7 @@ cols.append('full sum')
 df = pd.DataFrame(data1,columns=cols)
 df = df.sort_values('full sum')
 df = df.drop_duplicates(subset=['taps','ftaps','trainNum'])
-df = df[df['full sum'] < 31]
+df = df[df['full sum'] < 16]
 df = df[df['taps'] > df['ftaps']]
 df['k end sum'] = df.iloc[:,-(5+1):-1].sum(axis=1)
 for k in range(5,31,5):
