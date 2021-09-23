@@ -1,15 +1,17 @@
-# Sort through hpc data in Python
+# Graph data with pandas
 import matplotlib.pyplot as plt
 import math
 import time
 import numpy as np
 import pandas as pd
-start_time = time.time()
+start_time = time.time() # time it
 
+# load in data
 df_dfe = pd.read_pickle("dfe.pkl")
 df_lms = pd.read_pickle("lms.pkl")
 df_ann = pd.read_pickle("ann.pkl")
 
+## graph best 5 lms based per k last sum plot
 #for k in range(5,31,5):
 #    df_lms['k end sum'] = df_lms.iloc[:,-(k+1):-2].sum(axis=1)
 #    df_lms = df_lms.sort_values('k end sum')
@@ -27,6 +29,7 @@ df_ann = pd.read_pickle("ann.pkl")
 #    plt.savefig(fig_name)
 #    plt.close()
 #
+## graph best 5 dfe based per k last sum plot
 #for k in range(5,31,5):
 #    df_dfe['k end sum'] = df_dfe.iloc[:,-(k+1):-2].sum(axis=1)
 #    df_dfe = df_dfe.sort_values('k end sum')
@@ -44,6 +47,7 @@ df_ann = pd.read_pickle("ann.pkl")
 #    plt.savefig(fig_name)
 #    plt.close()
 #
+## graph best 5 anns based on k last sum
 #for k in range(5,31,5):
 #    df_ann['k end sum'] = df_ann.iloc[:,-(k+1):-2].sum(axis=1)
 #    df_ann = df_ann.sort_values('k end sum')
@@ -62,6 +66,8 @@ df_ann = pd.read_pickle("ann.pkl")
 #    plt.savefig(fig_name)
 #    plt.close()
 #
+
+# graph all arches on one plot
 df = df_ann.sort_values('full sum')
 df = df.drop_duplicates(subset=['arch'])
 df_ber = df.iloc[:,2:-2].copy().T
@@ -76,7 +82,7 @@ fig_name = "ann_archs.png"
 plt.savefig(fig_name)
 plt.close()
 
- 
+# graph top 4 best taps on one plot
 df_lms = df_lms.sort_values(by=['taps','full sum'])
 df = df_lms.drop_duplicates(subset=['taps'])
 df = df.head(4)
@@ -93,6 +99,7 @@ fig_name = "lms_best_taps.png"
 plt.savefig(fig_name)
 plt.close()
 
+# graph top 4 best taps on one plot
 df_dfe = df_dfe.sort_values(by=['taps','ftaps','full sum'])
 df = df_dfe.drop_duplicates(subset=['taps','ftaps'])
 df = df.head(4)
@@ -109,6 +116,7 @@ fig_name = "dfe_best_taps.png"
 plt.savefig(fig_name,bbox_inches='tight')
 plt.close()
 
+# graph each arch per sample plots
 for k in range(1,11):
     df = df_ann[ df_ann['samples'] == k]
     df_ber = df.iloc[:,2:-2].copy().T
@@ -125,6 +133,7 @@ for k in range(1,11):
     plt.savefig(fig_name)
     plt.close()
 
+# graph all sample per arch plot
 df_ann = df_ann.sort_values('samples')
 for arch in df_ann['arch']:
     df = df_ann[ df_ann['arch'] == arch]
@@ -142,6 +151,7 @@ for arch in df_ann['arch']:
     plt.savefig(fig_name)
     plt.close()
 
+# graph best ann lms and dfe on one plot
 df = df_ann.sort_values('full sum').head(1).iloc[:,2:-2]
 df = df.append(df_lms.sort_values('full sum').head(1).iloc[:,3:-2])
 df = df.append(df_dfe.sort_values('full sum').head(1).iloc[:,3:-2])
@@ -153,6 +163,5 @@ df_ber.plot(style='x-',kind='line',logy=True,\
 fig_name = "best_eqs.png"
 plt.savefig(fig_name)
 plt.close()
-
 
 print("--- %.2f seconds ---" % (time.time() - start_time))
