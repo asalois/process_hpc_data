@@ -7,13 +7,13 @@ import numpy as np
 import pandas as pd
 start_time = time.time() # time it
 
-for i in range(1,2000): # load in data
-    matname = "data/lms/" + str(i).zfill(3) + "_ber_eqs.mat"
+for i in range(1,6081): # load in data
+    matname = "data/lms/lmsBER_" + str(i).zfill(5) + "_100m.mat"
     try: 
         mat = spio.loadmat(matname, squeeze_me=True)
-        ber = mat['ber']
+        ber = mat['BER']
         step = mat['step']
-        trainNum = mat['trainNum']
+        trainNum = mat['train']
         taps = mat['taps']
         data = [taps,step,trainNum]
         data.extend(ber)

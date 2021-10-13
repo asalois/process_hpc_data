@@ -10,24 +10,25 @@ start_time = time.time() # time it
 df_dfe = pd.read_pickle("dfe.pkl")
 df_lms = pd.read_pickle("lms.pkl")
 df_ann = pd.read_pickle("ann.pkl")
+df_no_eq = pd.read_pickle("no_eq.pkl")
 
 ## graph best 5 lms based per k last sum plot
-#for k in range(5,31,5):
-#    df_lms['k end sum'] = df_lms.iloc[:,-(k+1):-2].sum(axis=1)
-#    df_lms = df_lms.sort_values('k end sum')
-#    df = df_lms.head(5)
-#    df_ber = df.iloc[:,3:34].copy().T
-#    ber_cols = list()
-#    for index, row in df.iterrows():
-#        ber_cols.append(\
-#            "tps={0:d} stp={1:1.3f} trn={2:d}"\
-#            .format(int(row['taps']), row['step'], int(math.log2(row['trainNum']))))
-#    df_ber.columns = ber_cols
-#    df_ber.plot(style='x-',kind='line',logy=True,\
-#            title="LMS Scan Ber",xlabel="SNR dB",ylabel="BER")
-#    fig_name = "lms_k_%d.png" % k
-#    plt.savefig(fig_name)
-#    plt.close()
+for k in range(5,31,5):
+    df_lms['k end sum'] = df_lms.iloc[:,-(k+1):-2].sum(axis=1)
+    df_lms = df_lms.sort_values('k end sum')
+    df = df_lms.head(5)
+    df_ber = df.iloc[:,3:34].copy().T
+    ber_cols = list()
+    for index, row in df.iterrows():
+        ber_cols.append(\
+            "tps={0:d} stp={1:1.3f} trn={2:d}"\
+            .format(int(row['taps']), row['step'], int(math.log2(row['trainNum']))))
+    df_ber.columns = ber_cols
+    df_ber.plot(style='x-',kind='line',logy=True,\
+            title="LMS Scan Ber",xlabel="SNR dB",ylabel="BER")
+    fig_name = "lms_k_%d.png" % k
+    plt.savefig(fig_name)
+    plt.close()
 #
 ## graph best 5 dfe based per k last sum plot
 #for k in range(5,31,5):
@@ -155,8 +156,9 @@ for arch in df_ann['arch']:
 df = df_ann.sort_values('full sum').head(1).iloc[:,2:-2]
 df = df.append(df_lms.sort_values('full sum').head(1).iloc[:,3:-2])
 df = df.append(df_dfe.sort_values('full sum').head(1).iloc[:,3:-2])
+df = df.append(df_no_eq.sort_values('full sum').head(1).iloc[:,:-2])
 df_ber = df.copy().T
-df_ber.columns = ["ANN","LMS","DFE"]
+df_ber.columns = ["ANN","LMS","DFE","NO EQ"]
 fig_title = "BER for Different Equalizers"
 df_ber.plot(style='x-',kind='line',logy=True,\
         title=fig_title,xlabel="SNR dB",ylabel="BER")

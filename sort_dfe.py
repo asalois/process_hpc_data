@@ -7,14 +7,15 @@ import numpy as np
 import pandas as pd
 start_time = time.time()
 
-for i in range(1,3543): # load in data
-    matname = "data/dfe/" + str(i).zfill(4) + "_ber_eqs.mat"
+for i in range(1,3041): # load in data
+    #matname = "data/dfe/" + str(i).zfill(4) + "_ber_eqs.mat"
+    matname = "data/dfe/dfeBER_" + str(i).zfill(5) + "_100m.mat"
     try: 
         mat = spio.loadmat(matname, squeeze_me=True)
-        ber = mat['ber']
-        trainNum = mat['trainNum']
+        ber = mat['BER']
+        trainNum = mat['train']
         taps = mat['taps']
-        ftaps = mat['ftaps']
+        ftaps = mat['fTaps']
         data = [taps,ftaps,trainNum]
         data.extend(ber)
         data.append(sum(ber))
