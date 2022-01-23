@@ -153,12 +153,14 @@ for arch in df_ann['arch']:
     plt.close()
 
 # graph best ann lms and dfe on one plot
-df = df_ann.sort_values('full sum').head(1).iloc[:,2:-2]
-df = df.append(df_lms.sort_values('full sum').head(1).iloc[:,3:-2])
+#df = df_ann.sort_values('full sum').head(1).iloc[:,2:-2]
+#df = df.append(df_lms.sort_values('full sum').head(1).iloc[:,3:-2])
+df = df_lms.sort_values('full sum').head(1).iloc[:,3:-2]
 df = df.append(df_dfe.sort_values('full sum').head(1).iloc[:,3:-2])
 df = df.append(df_no_eq.sort_values('full sum').head(1).iloc[:,:-2])
 df_ber = df.copy().T
-df_ber.columns = ["ANN","LMS","DFE","NO EQ"]
+#df_ber.columns = ["ANN","LMS","DFE","NO EQ"]
+df_ber.columns = ["LMS","DFE","NO EQ"]
 fig_title = "BER for Different Equalizers"
 df_ber.plot(style='x-',kind='line',logy=True,\
         title=fig_title,xlabel="SNR dB",ylabel="BER")
