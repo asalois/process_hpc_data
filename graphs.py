@@ -142,10 +142,10 @@ for arch in df_ann['arch']:
     ber_cols = list()
     for index, row in df.iterrows():
         ber_cols.append(\
-            "smpl={0:d}"\
+            "sample={0:d}"\
             .format(row['samples']))
     df_ber.columns = ber_cols
-    fig_title = "%s" % arch.replace("_"," ")
+    fig_title = "BER for NN with hidden layer size %s" % arch.replace("_"," ")
     df_ber.plot(style='x-',kind='line',logy=True,\
             title=fig_title,xlabel="SNR dB",ylabel="BER")
     fig_name = "ann_arch_%s.png" % arch
@@ -164,7 +164,6 @@ df_ber.columns = ["FFE","DFE","NO EQ"]
 df_ber["FFE"].loc[df_ber["FFE"] < 0.0008] = 0
 df_ber["DFE"].loc[df_ber["DFE"] < 0.00002] = 0
 df_ber.drop(df_ber.tail(9).index, inplace = True)
-print(df_ber)
 fig_title = "BER v SNR for Different Equalizers"
 df_ber.plot(style='x-',kind='line',logy=True,\
         title=fig_title,xlabel="SNR dB",ylabel="BER")
